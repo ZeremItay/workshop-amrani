@@ -28,7 +28,7 @@ type FormData = z.infer<typeof formSchema>;
 
 type FormStatus = "idle" | "loading" | "success" | "error";
 
-const WHATSAPP_NUMBER = "972000000000"; // יוחלף בהמשך
+const WHATSAPP_NUMBER = "972526111103";
 
 export function ContactForm() {
   const [status, setStatus] = useState<FormStatus>("idle");

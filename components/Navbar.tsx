@@ -14,13 +14,25 @@ const navLinks = [
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+      if (currentScrollY > lastScrollY && currentScrollY > 80) {
+        setIsHidden(true);
+        setIsMobileOpen(false);
+      } else {
+        setIsHidden(false);
+      }
+      lastScrollY = currentScrollY;
     };
-    window.addEventListener("scroll", handleScroll);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -35,9 +47,9 @@ export function Navbar() {
   return (
     <motion.nav
       initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 right-0 left-0 z-50 transition-all duration-500 ${
+      animate={{ y: isHidden ? -100 : 0 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+      className={`fixed top-0 right-0 left-0 z-50 transition-colors duration-500 ${
         isScrolled
           ? "bg-[#08080C]/70 backdrop-blur-2xl border-b border-[#E8B931]/10"
           : "bg-transparent"
